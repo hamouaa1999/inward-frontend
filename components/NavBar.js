@@ -73,11 +73,6 @@ export default function NavBar() {
     FacesRecordingModule.stopRecording();
     setRecordingState('stopped')
     console.log(recordingState)
-    const socket = io("http://192.168.0.107:4000/");
-
-    socket.emit('stop recording', { user_id: 1 })
-
-    socket.disconnect();
   }
 
   const work = () => {

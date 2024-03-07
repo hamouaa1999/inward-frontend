@@ -34,6 +34,7 @@ export default function EmotionRecordingsSlider() {
     }, [])
 
     const adjustDate = (date) => {
+        console.log(date)
         let day = date.split('-')[0]
         let month = date.split('-')[1]
         let year = date.split('-')[2]

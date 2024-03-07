@@ -37,8 +37,8 @@ public class ApiPoster implements Runnable {
 
         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
         int currentMinute = calendar.get(Calendar.MINUTE);
-        int day = calendar.get(Calendar.DAY_OF_MONTH + 1);
-        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH) + 1;
         int year = calendar.get(Calendar.YEAR);
 
         JSONObject jsonObject = new JSONObject();
