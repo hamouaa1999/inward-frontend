@@ -1,9 +1,8 @@
 import { View, TouchableOpacity, Text, TextInput } from "react-native";
 import { useEffect, useState } from "react";
-import PersonCard from "./PersonCard";
+import PersonCard from "../components/PersonCard";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Icon from 'react-native-feather';
-import NavBar from "./NavBar";
 import axios from "axios";
 import * as ImagePicker from 'react-native-image-picker'
 import Toast from "react-native-toast-message";
@@ -18,7 +17,6 @@ export default function Profile() {
 
         const setUserData = () => {
             AsyncStorage.getItem('user').then((user) => {
-                console.log(JSON.parse(user))
                 setFullName(JSON.parse(user).fullName)
                 setImage(JSON.parse(user).image)
             }).catch((error) => console.log(error))
@@ -55,13 +53,11 @@ export default function Profile() {
 
       const updateUser = () => {
         AsyncStorage.getItem('user').then((user) => {
-            console.log('here', JSON.parse(user)._id)
-            axios.put('http://10.0.2.2:5000/api/update-user/' + JSON.parse(user)._id, {
+            axios.put('http://' + SERVER_ADDRESS + ':5000/api/update-user/' + JSON.parse(user)._id, {
                 fullname: fullName,
                 image: image
             })
             .then((response) => {
-                console.log(response.data)
                 AsyncStorage.removeItem('user')
                 .then(() => AsyncStorage.setItem('user', JSON.stringify(response.data.user))
                 .then(() => console.log('User updated successfully'))
@@ -86,7 +82,7 @@ export default function Profile() {
 
             AsyncStorage.removeItem('user')
             .then(() => {
-                axios.delete('http://10.0.2.2:5000/api/delete-user/' + id)
+                axios.delete('http://' + SERVER_ADDRESS + ':5000/api/delete-user/' + id)
                 .then(response => {
                     console.log('user deleted successfully')
                     Toast.show({

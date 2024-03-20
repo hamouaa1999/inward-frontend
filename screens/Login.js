@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react"
 import { View, Text, TouchableOpacity, TextInput, BackHandler } from "react-native"
 import * as Icon from 'react-native-feather'
-import AuthButton from "./AuthButton";
-import NavBar from "./NavBar";
+import AuthButton from "../components/AuthButton";
+import NavBar from "../components/NavBar";
 import { useRoute } from "@react-navigation/native";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-toast-message";
+import { SERVER_ADDRESS } from "../config";
 
 
 export default function Login({ navigation }) {
@@ -26,12 +27,13 @@ export default function Login({ navigation }) {
     })
     
     const login = () => {
+        console.log(SERVER_ADDRESS, username, password)
         if (username.length > 0 && password.length > 0) {
-            axios.post('http://10.0.2.2:5000/api/auth/signin', {
+            console.log('http://' + SERVER_ADDRESS + ':5000/api/auth/signin')
+            axios.post('http://' + SERVER_ADDRESS + ':5000/api/auth/signin', {
                 username: username,
                 password: password
             }).then((response) => {
-                console.log('It worked hnaya')
                 setUsername('')
                 setPassword('')
                 Toast.show({
@@ -39,7 +41,6 @@ export default function Login({ navigation }) {
                     text1: 'Login',
                     text2: 'User successfully logged in'
                   });
-                  console.log(response.data)
                 AsyncStorage.setItem('user', JSON.stringify(response.data.user))
                 .then((data) => console.log('User saved to local storage: ' + data))
                 .catch(error => {
@@ -48,7 +49,6 @@ export default function Login({ navigation }) {
                 navigation.navigate('UserEmotions')
             })
             .catch(error => {
-                console.log('Error hnaya')
                 Toast.show({
                     type: 'error',
                     text1: 'Login error',
@@ -93,7 +93,8 @@ export default function Login({ navigation }) {
                 />
                 <TouchableOpacity>
                 {
-                    showPassword ? (<Icon.Eye onPress={() => setShowPassword(!showPassword)} className="mt-3 ml-1" height="20" width="20" stroke="black" />) : (<Icon.EyeOff onPress={() => setShowPassword(!showPassword)} className="mt-3 ml-12" height="20" width="20" stroke="black" />) 
+                    showPassword ? (<Icon.Eye onPress={() => setShowPassword(!showPassword)} className="mt-3 ml-1" height="20" width="20" stroke="black" />) 
+                                 : (<Icon.EyeOff onPress={() => setShowPassword(!showPassword)} className="mt-3 ml-12" height="20" width="20" stroke="black" />) 
                 }
                 </TouchableOpacity>
             </View>

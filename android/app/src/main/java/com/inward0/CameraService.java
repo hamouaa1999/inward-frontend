@@ -101,8 +101,6 @@ public class CameraService extends Service {
 
     @SuppressLint("MissingPermission")
     private void RecordFaces() {
-        Log.i("--Service info--", "Performed successfully");
-
         openCameraThread.start();
         captureSessionThread.start();
         repeatingRequestThread.start();
@@ -112,19 +110,19 @@ public class CameraService extends Service {
         CameraCaptureSession.CaptureCallback captureCallback = new CameraCaptureSession.CaptureCallback() {
             @Override
             public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result) {
-                Log.i("-----Here the tag------", "-----------It works: ");
+                Log.i("onCaptureCompleted", "onCaptureCompleted");
             }
 
             @Override
             public void onCaptureFailed(CameraCaptureSession session, CaptureRequest request, CaptureFailure failure) {
-                Log.i("-----Here the tag------", "-----------It doesn't work: " + failure.getReason());
+                Log.i("---onCaptureFailed---", "---onCaptureFailed--- " + failure.getReason());
             }
         };
 
         CameraCaptureSession.StateCallback cameraCaptureSessionStateCallback = new CameraCaptureSession.StateCallback() {
             @Override
             public void onConfigured(CameraCaptureSession session) {
-                Log.i("onConfigured", "------Hamou---------");
+                Log.i("onConfigured", "------onConfigured------");
 
                 try {
                     cameraCaptureSession = session;
@@ -140,7 +138,7 @@ public class CameraService extends Service {
 
             @Override
             public void onConfigureFailed(CameraCaptureSession session) {
-                Log.i("onConfigured", "------Hamou");
+                Log.i("onConfiguredFailed", "----onConfiguredFailed----");
             }
         };
 
@@ -165,9 +163,8 @@ public class CameraService extends Service {
 
             @Override
             public void onDisconnected(@NonNull CameraDevice camera) {
-                Log.i("Trial", "here...disconnected");
+                Log.i("onDisconnected", "onDisconnected");
                 ImageBufferer.getImagePoster().makeApiCall();
-                Log.i("--here hamou--", "DONE CORRECTLY BABE");
                 Intent intent = new Intent(getApplicationContext(), CameraService.class);
                 getApplicationContext().stopService(intent);
 
@@ -184,8 +181,8 @@ public class CameraService extends Service {
                 notificationManager = NotificationManagerCompat.from(getApplicationContext());
                 Notification notification = new NotificationCompat.Builder(getApplicationContext(), "Camera Service Channel")
                         .setSmallIcon(R.drawable.emotion_notification)
-                        .setContentTitle("Notification ya Hamou")
-                        .setContentText("This is the content of your notification ya Hamou")
+                        .setContentTitle("Notification")
+                        .setContentText("This is the content of your notification")
                         .build();
 
                 if (ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
@@ -203,7 +200,7 @@ public class CameraService extends Service {
 
             @Override
             public void onError(@NonNull CameraDevice camera, int error) {
-                Log.i("Trial", "here...error");
+                Log.i("onError", "onError");
                 camera.close();
             }
         };
@@ -244,43 +241,15 @@ public class CameraService extends Service {
     }
 
     private void handleImage(ImageReader reader) {
-        /*
-        check the error message Memory warning (pressure level: TRIM_MEMORY_RUNNING_LOW) received by JS VM, ignoring because it's non-severe
-        Memory warning (pressure level: TRIM_MEMORY_RUNNING_CRITICAL) received by JS VM, running a GC
-        and make buffering stuff in runnable and execute them in a thread or use Handler.post to pass work packages
-        */
 
-        Image image = null;
         try {
 
             imageBufferer.setImage(reader.acquireLatestImage());
             imageBufferingThread.getHandler().post(imageBufferer);
-            //imageBufferer.setImage(image);
-            //imageBufferingThread.getHandler().post(imageBufferer);
-            /**/
             Log.i("--image loaded--", "Image loaded");
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-
-
-    private Response postImageData(String bytes) throws IOException {
-        OkHttpClient client = new OkHttpClient();
-
-        RequestBody formBody = new FormBody.Builder()
-                .add("data", bytes)
-                .build();
-
-        Request request = new Request.Builder()
-                .url("http://10.49.85.221:4000/api/post")
-                .post(formBody)
-                .build();
-
-        Call call = client.newCall(request);
-
-        return call.execute();
     }
 }
 

@@ -1,14 +1,10 @@
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import EmotionRecordingsSlider from "../components/EmotionRecordingsSlider";
-import Options from "../components/Options";
-import EmotionRecording from "../components/EmotionRecording";
-import PersonCard from "../components/PersonCard";
-import * as Icon from 'react-native-feather';
 import NavBar from "../components/NavBar";
 import { useState } from "react";
-import Profile from "../components/Profile";
-
+import Profile from "./Profile";
 import { RecordingContext } from "../contexts/contexts";
+
 
 
 

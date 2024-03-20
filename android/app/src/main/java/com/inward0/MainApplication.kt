@@ -6,6 +6,7 @@ import android.app.NotificationManager
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication
@@ -76,6 +77,7 @@ class MainApplication : Application(), ReactApplication {
                     "Camera Service Channel",
                     NotificationManager.IMPORTANCE_HIGH
             )
+
             val manager = getSystemService(NotificationManager::class.java)
             manager.createNotificationChannel(serviceChannel)
         }

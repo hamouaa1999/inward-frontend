@@ -71,6 +71,6 @@ public class ApiPoster implements Runnable {
             e.printStackTrace();
         }
 
-        Log.i("--here--", "North America Babe");
+        Log.i("--response--", "Response received successfully");
     }
 }

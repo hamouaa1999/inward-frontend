@@ -50,31 +50,11 @@ public class ImageBufferer implements Runnable {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 imagePoster.setImage(Base64.getEncoder().encodeToString(bytes)); //Arrays.toString(bytes.clone())
             }
-            bytes = null;
             imagePosterThread.getHandler().post(imagePoster);
-            //postImageData(byteString);
-            /*byteString += "|" + Arrays.toString(bytes);
-            images++;
-            Log.i("----image----", "Captured image: " + images);
-            if (images > 50) {
-                Log.i("---ngah ngah----", byteString);
-                //ByteArrayOutputStream obj = compress(byteString);
-                //String outStr = Base64.getEncoder().encodeToString(obj.toByteArray());
-                //postImageData(outStr);
-                images = 0;
-                byteString = "";
-            }*/
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private ByteArrayOutputStream compress(String byteString) throws IOException {
-        ByteArrayOutputStream obj = new ByteArrayOutputStream();
-        GZIPOutputStream gzip = new GZIPOutputStream(obj);
-        gzip.write(byteString.getBytes());
-        gzip.close();
-        return obj;
     }
 
     private Response postImageData(String bytes) throws IOException {

@@ -1,0 +1,3 @@
+export const SERVER_ADDRESS = "18.225.10.231"
+
+//18.225.10.231

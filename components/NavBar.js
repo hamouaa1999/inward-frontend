@@ -1,9 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { Text, View, Switch, PermissionsAndroid, Button, TouchableOpacity, Image, ViewBase } from "react-native";
 import * as Icon from 'react-native-feather';
-import Options from "./Options";
 import { NativeModules } from "react-native";
-import { io } from "socket.io-client";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { RecordingContext } from "../contexts/contexts";
@@ -74,14 +72,6 @@ export default function NavBar() {
     setRecordingState('stopped')
     console.log(recordingState)
   }
-
-  const work = () => {
-    console.log('executed');
-    FacesRecordingModule.work();
-  }
-
-  const toggleSwitch = () => setIsEnabled(!isEnabled)
-
 
 
   return (

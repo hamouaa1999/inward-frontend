@@ -14,17 +14,6 @@ import com.facebook.react.bridge.ReactMethod;
 
 public class FacesRecordingModule extends ReactContextBaseJavaModule {
 
-    private static final int PERMISSION_REQUEST_CODE = 200;
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
-
-    private String byteString = "";
-    private int images = 0;
-
-    private NotificationManagerCompat norificationManager;
-
-    // private AppDataBase db;
-    private CameraCaptureSession mSession = null;
-
     FacesRecordingModule(ReactApplicationContext context) {
         super(context);
         // this.db = Room.databaseBuilder(getReactApplicationContext(),
@@ -37,16 +26,8 @@ public class FacesRecordingModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void work(String userId) {
-        Log.i("------ user id -------", userId);
-
-
-    }
-
-    @ReactMethod
     public void stopRecording() throws CameraAccessException {
         ImageBufferer.getImagePoster().makeApiCall();
-        Log.i("--here hamou--", "DONE CORRECTLY BABE");
         Intent intent = new Intent(getReactApplicationContext(), CameraService.class);
         getReactApplicationContext().stopService(intent);
     }
@@ -54,18 +35,9 @@ public class FacesRecordingModule extends ReactContextBaseJavaModule {
     @SuppressLint("MissingPermission")
     @ReactMethod
     public void startRecording(String userId) {
-        Log.i("--executed--", userId);
-        /*WorkRequest recordFacesWorkRequest = new OneTimeWorkRequest.Builder(FacesRecordingWorker.class)
-                .build();
-        WorkManager
-                .getInstance(getReactApplicationContext())
-                .enqueue(recordFacesWorkRequest);*/
-
         Intent intent = new Intent(getReactApplicationContext(), CameraService.class);
         intent.putExtra("userId", userId);
         getReactApplicationContext().startService(intent);
 
     }
-
-
 }
